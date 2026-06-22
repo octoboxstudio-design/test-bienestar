@@ -3,13 +3,13 @@
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Calculadora de Riesgo Emocional | Test de Validaci&oacute;n</title>
+   <title>Calculadora de Riesgo Emocional | Test de Validación</title>
    <script src="https://cdn.tailwindcss.com"></script>
-   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;600;700&display=swap" rel="stylesheet">
    <style>
        body {
            font-family: 'Inter', sans-serif;
-           background-color: #f8fafc; /* Neutral, calming background */
+           background-color: #f8fafc;
            color: #334155;
        }
        .fade-in {
@@ -19,7 +19,6 @@
            from { opacity: 0; transform: translateY(10px); }
            to { opacity: 1; transform: translateY(0); }
        }
-       /* Custom radio button styling */
        .option-label:has(input:checked) {
            background-color: #ede9fe;
            border-color: #8b5cf6;
@@ -30,8 +29,6 @@
 </head>
 <body class="antialiased min-h-screen flex flex-col items-center pt-16 pb-8 px-4">
 
-
-   <!-- Botón de Salida de Emergencia - Crucial para víctimas de abuso -->
    <div class="fixed top-0 left-0 w-full bg-rose-500 text-white text-center py-2 px-4 flex justify-between items-center shadow-md z-50">
        <span class="text-xs md:text-sm font-medium opacity-90">Navegación Privada</span>
        <button onclick="emergencyExit()" class="bg-white text-rose-600 hover:bg-rose-50 text-xs md:text-sm font-bold py-1 px-3 rounded shadow transition-colors">
@@ -39,10 +36,8 @@
        </button>
    </div>
 
-
    <main class="w-full max-w-2xl bg-white rounded-2xl shadow-xl overflow-hidden mt-4">
       
-       <!-- PANTALLA DE INICIO -->
        <div id="start-screen" class="p-8 md:p-12 text-center fade-in">
            <div class="w-16 h-16 bg-violet-100 text-violet-600 rounded-full flex items-center justify-center mx-auto mb-6">
                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
@@ -52,17 +47,14 @@
            <p class="text-slate-500 mb-8 leading-relaxed text-sm md:text-base text-left">
                A veces sientes que estás perdiendo la cabeza. Te preguntas constantemente si eres tú la persona "complicada" o si estás reaccionando de forma exagerada.
                <br><br>
-               Este breve diagnóstico confidencial de 7 preguntas te ayudará a medir tu nivel de disonancia cognitiva y a ponerle nombre a lo que estás viviendo. <strong>Tus respuestas son 100% anónimas y no se guardan en ningún lugar.</strong>
+               Este breve diagnóstico confidencial de 7 preguntas te ayudará a medir tu nivel de disonancia cognitiva y a ponerle nombre a lo que estás viviendo.
            </p>
            <button onclick="startQuiz()" class="w-full md:w-auto px-8 py-4 bg-violet-600 hover:bg-violet-700 text-white font-bold rounded-lg shadow-lg transition-all transform hover:scale-105">
                INICIAR EVALUACIÓN SEGURO
            </button>
        </div>
 
-
-       <!-- PANTALLA DEL CUESTIONARIO -->
        <div id="quiz-screen" class="hidden p-6 md:p-10 fade-in">
-           <!-- Barra de Progreso -->
            <div class="mb-8">
                <div class="flex justify-between text-xs font-semibold text-slate-400 mb-2">
                    <span id="progress-text">Pregunta 1 de 7</span>
@@ -73,16 +65,9 @@
                </div>
            </div>
 
-
-           <!-- Contenedor de Preguntas -->
            <div id="question-container">
-               <h3 id="question-text" class="text-xl md:text-2xl font-bold text-slate-800 mb-6 leading-tight">
-                   <!-- La pregunta se inyecta por JS -->
-               </h3>
-              
-               <div id="options-container" class="space-y-3">
-                   <!-- Las opciones se inyectan por JS -->
-               </div>
+               <h3 id="question-text" class="text-xl md:text-2xl font-bold text-slate-800 mb-6 leading-tight"></h3>
+               <div id="options-container" class="space-y-3"></div>
            </div>
           
            <div class="mt-8 flex justify-end">
@@ -92,28 +77,41 @@
            </div>
        </div>
 
+       <div id="capture-screen" class="hidden p-8 md:p-12 text-center fade-in">
+           <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6">
+               <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+           </div>
+           <h2 class="text-2xl font-bold text-slate-800 mb-2">Tu análisis ha sido calculado con éxito</h2>
+           <p class="text-slate-500 mb-6 text-sm md:text-base">
+               Para proteger tu privacidad, evitar el rastreo de terceros y garantizar que solo tú accedas a esta información, ingresa tu correo de acceso seguro.
+           </p>
+           
+           <div class="space-y-4 max-w-md mx-auto text-left">
+               <div>
+                   <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Tu Nombre de pila (Opcional):</label>
+                   <input type="text" id="lead-name" placeholder="Ej. María" class="w-full p-3 border-2 border-slate-200 rounded-xl focus:border-violet-500 focus:outline-none">
+               </div>
+               <div>
+                   <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Tu Correo Privado:</label>
+                   <input type="email" id="lead-email" placeholder="ejemplo@correo.com" class="w-full p-3 border-2 border-slate-200 rounded-xl focus:border-violet-500 focus:outline-none">
+               </div>
+               <button onclick="processCaptureAndShowResults()" class="w-full py-4 bg-violet-600 hover:bg-violet-700 text-white font-bold rounded-xl shadow-md transition-all">
+                   DESBLOQUEAR MI DIAGNÓSTICO AHORA
+               </button>
+           </div>
+       </div>
 
-       <!-- PANTALLA DE RESULTADOS -->
        <div id="result-screen" class="hidden p-6 md:p-10 fade-in">
            <div class="text-center mb-8">
-               <div id="result-icon" class="w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-4">
-                   <!-- Icono inyectado por JS -->
-               </div>
+               <div id="result-icon" class="w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-4"></div>
                <h2 class="text-xs uppercase tracking-widest font-bold text-slate-400 mb-2">Tu Diagnóstico:</h2>
-               <h1 id="result-title" class="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
-                   <!-- Título de resultado inyectado por JS -->
-               </h1>
-               <p id="result-desc" class="text-slate-600 text-left leading-relaxed p-4 bg-slate-50 rounded-lg border border-slate-100">
-                   <!-- Descripción inyectada por JS -->
-               </p>
+               <h1 id="result-title" class="text-3xl md:text-4xl font-bold text-slate-800 mb-4"></h1>
+               <p id="result-desc" class="text-slate-600 text-left leading-relaxed p-4 bg-slate-50 rounded-lg border border-slate-100"></p>
            </div>
 
-
-           <!-- El Pitch "Plan de Fuga" (Lead Magnet to Core Offer) -->
            <div id="cta-section" class="bg-indigo-900 rounded-xl p-6 md:p-8 text-white shadow-inner relative overflow-hidden">
-               <!-- Decorative background elements -->
                <div class="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 rounded-full bg-indigo-800 opacity-50 blur-2xl"></div>
-              
+               
                <h3 class="text-2xl font-bold mb-3 relative z-10">No necesitas más valor. Necesitas una estrategia.</h3>
                <p class="text-indigo-200 mb-6 text-sm md:text-base leading-relaxed relative z-10">
                    La mayoría espera el "momento perfecto" o una explosión emocional para escapar. Pero las salidas exitosas no son impulsivas; son calculadas, silenciosas y preparadas.
@@ -137,11 +135,10 @@
                    </ul>
                </div>
 
-
                <a href="https://metabolismo.joseguerrero.blog/home-page-page" target="_top" class="w-full bg-emerald-500 hover:bg-emerald-400 text-white font-bold py-4 px-6 rounded flex items-center justify-center no-underline">
-  <span>QUIERO PREPARAR MI LIBERTAD AHORA</span>
-  <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-</a>
+                   <span>QUIERO PREPARAR MI LIBERTAD AHORA</span>
+                   <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+               </a>
                <p class="text-center text-xs text-indigo-300 mt-4 relative z-10 italic">
                    "Toma acción hoy, <strong>porque</strong> cada día que esperas, tu identidad se desvanece un poco más en silencio."
                </p>
@@ -149,15 +146,13 @@
        </div>
    </main>
 
-
    <script>
-       // Data Structure for the Quiz
        const questions = [
            {
                text: "1. ¿Sientes que debes 'caminar sobre cáscaras de huevo' constantemente para no desatar su enojo o su frialdad?",
                options: [
                    { text: "Rara vez o nunca.", score: 0 },
-                   { text: "A veces, dependiendo de su humor.", score: 1 },
+                   { text: "A veces, depending de su humor.", score: 1 },
                    { text: "Todos los días. Vivo midiendo mis palabras y acciones.", score: 3 }
                ]
            },
@@ -211,16 +206,13 @@
            }
        ];
 
-
-       // App State
        let currentQuestionIndex = 0;
        let totalScore = 0;
        let selectedScore = null;
 
-
-       // DOM Elements
        const startScreen = document.getElementById('start-screen');
        const quizScreen = document.getElementById('quiz-screen');
+       const captureScreen = document.getElementById('capture-screen');
        const resultScreen = document.getElementById('result-screen');
        const questionText = document.getElementById('question-text');
        const optionsContainer = document.getElementById('options-container');
@@ -228,41 +220,29 @@
        const progressBar = document.getElementById('progress-bar');
        const progressText = document.getElementById('progress-text');
 
-
-       // Función de Escape Rápido (Crucial)
        function emergencyExit() {
-           // Se reemplaza en el historial para que no puedan usar el botón "Atrás"
            window.location.replace("https://www.google.com");
        }
 
-
-       // Iniciar Quiz
        function startQuiz() {
            startScreen.classList.add('hidden');
            quizScreen.classList.remove('hidden');
            renderQuestion();
        }
 
-
-       // Renderizar Pregunta Actual
        function renderQuestion() {
            const question = questions[currentQuestionIndex];
            questionText.textContent = question.text;
           
-           // Actualizar progreso
            const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
            progressBar.style.width = `${progress}%`;
            progressText.textContent = `Pregunta ${currentQuestionIndex + 1} de ${questions.length}`;
 
-
-           // Limpiar estado
            selectedScore = null;
            nextBtn.classList.add('hidden');
            optionsContainer.innerHTML = '';
 
-
-           // Renderizar Opciones
-           question.options.forEach((option, index) => {
+           question.options.forEach((option) => {
                const label = document.createElement('label');
                label.className = "option-label block w-full p-4 border-2 border-slate-200 rounded-xl cursor-pointer transition-all duration-200 hover:border-violet-300 hover:bg-slate-50 relative";
               
@@ -272,21 +252,17 @@
                input.className = 'absolute opacity-0 w-0 h-0';
                input.value = option.score;
               
-               // Event Listener para selección
                input.addEventListener('change', (e) => {
                    selectedScore = parseInt(e.target.value);
                    nextBtn.classList.remove('hidden');
-                   // Add smooth scroll slightly down so next button is highly visible on mobile
                    setTimeout(() => {
                        nextBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                    }, 100);
                });
 
-
                const span = document.createElement('span');
                span.className = "text-base md:text-lg";
                span.textContent = option.text;
-
 
                label.appendChild(input);
                label.appendChild(span);
@@ -294,91 +270,80 @@
            });
        }
 
-
-       // Siguiente Pregunta o Resultados
        function nextQuestion() {
            if (selectedScore !== null) {
                totalScore += selectedScore;
            }
 
-
            if (currentQuestionIndex < questions.length - 1) {
                currentQuestionIndex++;
-               // Add fade animation effect for smooth transition
                quizScreen.classList.remove('fade-in');
-               void quizScreen.offsetWidth; // trigger reflow
+               void quizScreen.offsetWidth;
                quizScreen.classList.add('fade-in');
                renderQuestion();
            } else {
-               showResults();
+               // Cambiamos de pantalla hacia la captura de datos (Ruta de Adquisición limpia)
+               quizScreen.classList.add('hidden');
+               captureScreen.classList.remove('hidden');
            }
        }
 
+       function processCaptureAndShowResults() {
+           const emailValue = document.getElementById("lead-email").value.trim();
+           
+           // Validación básica de formulario
+           if (!emailValue || !emailValue.includes("@")) {
+               alert("Por favor, introduce un correo electrónico válido para proteger tus accesos.");
+               return;
+           }
 
-       // Mostrar Resultados (Validación de Valor Hormozi)
-       function showResults() {
-// 1. URL de tu automatización en GoHighLevel
-    const webhookUrl = "https://services.leadconnectorhq.com/hooks/8fyHQ2c4yy3GFQStNOHK/webhook-trigger/266747b5-d129-47bd-9557-0fe387d2fbc7";
+           // 1. Ocultar captura y liberar resultados visuales en milisegundos
+           captureScreen.classList.add('hidden');
+           resultScreen.classList.remove('hidden');
 
-    // 2. Extraemos el correo y nombre que el usuario ingresó en tu formulario de captura
-    const correoUsuario = document.getElementById("lead-email") ? document.getElementById("lead-email").value : "";
-    const nombreUsuario = document.getElementById("lead-name") ? document.getElementById("lead-name").value : "Anonimo";
-    
-    // Calculamos el puntaje final basado en la lógica de tu test (usualmente una variable existente como score o totalScore)
-    const puntajeFinal = typeof score !== 'undefined' ? score : 0; 
+           // 2. Inyectar contenido dinámico basado en valor
+           const resultTitle = document.getElementById('result-title');
+           const resultDesc = document.getElementById('result-desc');
+           const resultIcon = document.getElementById('result-icon');
 
-    // 3. Preparamos el paquete de datos
-    const payload = {
-        name: nombreUsuario,
-        email: correoUsuario,
-        score: puntajeFinal,
-        source: "Calculadora Riesgo Emocional"
-    };
+           if (totalScore >= 12) {
+               resultTitle.textContent = "Disonancia Cognitiva Alta / Gaslighting Confirmado";
+               resultDesc.innerHTML = "Tus respuestas indican que estás viviendo bajo una distorsión constante de tu realidad. Estás caminando sobre cáscaras de huevo todos los días y has comenzado a somatizar el estrés físicamente. No estás loca/o, estás bajo un sistema de control encubierto que drena tu identidad.";
+               resultIcon.className = "w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-4 bg-rose-100 text-rose-600";
+               resultIcon.innerHTML = '<svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>';
+           } else {
+               resultTitle.textContent = "Alerta de Manipulación en Fase Inicial";
+               resultDesc.innerHTML = "Aunque mantienes destellos de tu identidad, existen tácticas sutiles de castigo con la ley del hielo y confusión que están desgastando tu autoestima. Es una situación que empeora drásticamente cuanto más se espera para actuar.";
+               resultIcon.className = "w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-4 bg-amber-100 text-amber-600";
+               resultIcon.innerHTML = '<svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
+           }
 
-    // 4. Enviamos los datos en silencio a GoHighLevel
-    fetch(webhookUrl, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
-    })
-// 1. Liberamos la pantalla visual al instante (Cero esperas, avanza pase lo que pase)
-    quizScreen.classList.add('hidden');
-    resultsScreen.classList.remove('hidden');
+           // 3. Envío asíncrono al Webhook de GoHighLevel en segundo plano
+           try {
+               const webhookUrl = "https://services.leadconnectorhq.com/hooks/8fyHQ2c4yy3GFQStNOHK/webhook-trigger/266747b5-d129-47bd-9557-0fe387d2fbc7";
+               const nameValue = document.getElementById("lead-name").value.trim();
 
-    // 2. Escudo de protección para que NADA congele la calculadora
-    try {
-        // URL de tu Webhook de GoHighLevel
-        const webhookUrl = "https://services.leadconnectorhq.com/hooks/8fyHQ2c4yy3GFQStNOHK/webhook-trigger/266747b5-d129-47bd-9557-0fe387d2fbc7";
+               const payload = {
+                   name: nameValue || "Anónimo",
+                   email: emailValue,
+                   score: totalScore,
+                   source: "Calculadora Riesgo Emocional"
+               };
 
-        // Capturamos los datos asegurándonos de que si no existen, no rompan el test
-        const emailInput = document.getElementById("lead-email");
-        const nameInput = document.getElementById("lead-name");
-        
-        const correoUsuario = emailInput ? emailInput.value : "";
-        const nombreUsuario = nameInput ? nameInput.value : "Anonimo";
-        const puntajeFinal = typeof score !== 'undefined' ? score : 0;
+               fetch(webhookUrl, {
+                   method: "POST",
+                   headers: {
+                       "Content-Type": "application/json"
+                   },
+                   body: JSON.stringify(payload)
+               })
+               .then(response => console.log("Lead sincronizado exitosamente con GHL."))
+               .catch(error => console.error("Error en envío asíncrono a GHL:", error));
 
-        const payload = {
-            name: nombreUsuario,
-            email: correoUsuario,
-            score: puntajeFinal,
-            source: "Calculadora Riesgo Emocional"
-        };
-
-        // Envió en segundo plano a GHL
-        fetch(webhookUrl, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(payload)
-        })
-        .then(response => console.log("Sincronización exitosa con GoHighLevel"))
-        .catch(error => console.error("Error en envío a GHL:", error));
-
-    } catch (error) {
-        // Si hay cualquier error con las variables, el navegador lo ignora aquí y el test sigue funcionando
-        console.log("El test continuó de forma segura sin interrupciones visuales:", error);
-    }
+           } catch (e) {
+               console.log("Error controlado en transferencia de datos de adquisición:", e);
+           }
+       }
+   </script>
+</body>
+</html>
