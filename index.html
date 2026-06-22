@@ -343,68 +343,42 @@
         },
         body: JSON.stringify(payload)
     })
-// 1. Liberamos la pantalla visual al instante (Cero esperas para el usuario)
+// 1. Liberamos la pantalla visual al instante (Cero esperas, avanza pase lo que pase)
     quizScreen.classList.add('hidden');
     resultsScreen.classList.remove('hidden');
 
-    // 2. Definimos la URL de tu Webhook de GoHighLevel
-    const webhookUrl = "TU_URL_DE_WEBHOOK_AQUÍ";
+    // 2. Escudo de protección para que NADA congele la calculadora
+    try {
+        // URL de tu Webhook de GoHighLevel
+        const webhookUrl = "TU_URL_DE_WEBHOOK_AQUÍ";
 
-    // 3. Capturamos los datos en variables seguras
-    const correoUsuario = document.getElementById("lead-email") ? document.getElementById("lead-email").value : "";
-    const nombreUsuario = document.getElementById("lead-name") ? document.getElementById("lead-name").value : "Anonimo";
-    const puntajeFinal = typeof score !== 'undefined' ? score : 0;
+        // Capturamos los datos asegurándonos de que si no existen, no rompan el test
+        const emailInput = document.getElementById("lead-email");
+        const nameInput = document.getElementById("lead-name");
+        
+        const correoUsuario = emailInput ? emailInput.value : "";
+        const nombreUsuario = nameInput ? nameInput.value : "Anonimo";
+        const puntajeFinal = typeof score !== 'undefined' ? score : 0;
 
-    const payload = {
-    name: nombreUsuario,
-    email: correoUsuario,
-    score: puntajeFinal,
-    source: "Calculadora Riesgo Emocional"
-};
-    };
+        const payload = {
+            name: nombreUsuario,
+            email: correoUsuario,
+            score: puntajeFinal,
+            source: "Calculadora Riesgo Emocional"
+        };
 
-    // 4. Enviamos los datos a GHL en segundo plano (Si falla, el usuario ni se entera)
-    fetch(webhookUrl, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
-    })
-    .then(response => console.log("Sincronización exitosa con GoHighLevel"))
-    .catch(error => console.error("Envío en segundo plano omitido de forma segura:", error));
-});
-          
-           const resultTitle = document.getElementById('result-title');
-           const resultDesc = document.getElementById('result-desc');
-           const resultIcon = document.getElementById('result-icon');
+        // Envió en segundo plano a GHL
+        fetch(webhookUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(response => console.log("Sincronización exitosa con GoHighLevel"))
+        .catch(error => console.error("Error en envío a GHL:", error));
 
-
-           // Lógica del Diagnóstico según el dolor expresado en el prompt
-           if (totalScore <= 6) {
-               resultIcon.className = "w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-4 bg-emerald-100 text-emerald-600";
-               resultIcon.innerHTML = '<svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
-               resultTitle.textContent = "Bajo Nivel de Alerta";
-               resultTitle.className = "text-3xl md:text-4xl font-bold mb-4 text-emerald-600";
-               resultDesc.innerHTML = "Es posible que experimentes conflictos normales de pareja. Tu percepción de la realidad parece estar intacta y conservas tu identidad. Sin embargo, mantén tus límites claros y cuida tu espacio personal.";
-              
-               // Esconder CTA agresivo si no hay riesgo
-               document.getElementById('cta-section').classList.add('hidden');
-              
-           } else if (totalScore <= 14) {
-               resultIcon.className = "w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-4 bg-amber-100 text-amber-600";
-               resultIcon.innerHTML = '<svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>';
-               resultTitle.textContent = "Alerta Naranja: Disonancia Moderada";
-               resultTitle.className = "text-3xl md:text-4xl font-bold mb-4 text-amber-600";
-               resultDesc.innerHTML = "<strong>No estás exagerando.</strong> Las respuestas indican que estás expuesta/o a tácticas de manipulación sutiles (gaslighting) que te hacen dudar de ti misma/o ocasionalmente. Estás comenzando a experimentar el aislamiento y el desgaste emocional. Es el momento exacto para trazar un plan antes de que la 'amnesia emocional' sea severa.";
-           } else {
-               resultIcon.className = "w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-4 bg-rose-100 text-rose-600";
-               resultIcon.innerHTML = '<svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>';
-               resultTitle.textContent = "Alerta Roja: Abuso Emocional Severo";
-               resultTitle.className = "text-3xl md:text-4xl font-bold mb-4 text-rose-600";
-               resultDesc.innerHTML = "<strong>Valida esto hoy: No estás loca/o y la culpa no es tuya.</strong> Tus respuestas confirman una dinámica de control sistemático. Estás experimentando la pérdida severa de identidad, el aislamiento y la somatización física del estrés porque estás sometida/o a tácticas de coerción. El miedo que sientes es real, y la dependencia que percibes ha sido fabricada a propósito para mantenerte allí.";
-           }
-       }
-   </script>
-</body>
-</html>
+    } catch (error) {
+        // Si hay cualquier error con las variables, el navegador lo ignora aquí y el test sigue funcionando
+        console.log("El test continuó de forma segura sin interrupciones visuales:", error);
+    }
