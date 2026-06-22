@@ -317,8 +317,43 @@
 
        // Mostrar Resultados (Validación de Valor Hormozi)
        function showResults() {
-           quizScreen.classList.add('hidden');
-           resultScreen.classList.remove('hidden');
+// 1. URL de tu automatización en GoHighLevel
+    const webhookUrl = "https://services.leadconnectorhq.com/hooks/8fyHQ2c4yy3GFQStNOHK/webhook-trigger/266747b5-d129-47bd-9557-0fe387d2fbc7";
+
+    // 2. Extraemos el correo y nombre que el usuario ingresó en tu formulario de captura
+    const correoUsuario = document.getElementById("lead-email") ? document.getElementById("lead-email").value : "";
+    const nombreUsuario = document.getElementById("lead-name") ? document.getElementById("lead-name").value : "Anonimo";
+    
+    // Calculamos el puntaje final basado en la lógica de tu test (usualmente una variable existente como score o totalScore)
+    const puntajeFinal = typeof score !== 'undefined' ? score : 0; 
+
+    // 3. Preparamos el paquete de datos
+    const payload = {
+        name: nombreUsuario,
+        email: correoUsuario,
+        score: puntajeFinal,
+        source: "Calculadora Riesgo Emocional"
+    };
+
+    // 4. Enviamos los datos en silencio a GoHighLevel
+    fetch(webhookUrl, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(response => {
+        // 5. Una vez que GHL recibe el lead con éxito, mostramos los resultados en la pantalla
+        quizScreen.classList.add('hidden');
+        resultsScreen.classList.remove('hidden');
+    })
+    .catch(error => {
+        console.error("Error al enviar a GHL:", error);
+        // Respaldo de seguridad: si falla la red, mostramos el resultado igual para no frustrar al usuario
+        quizScreen.classList.add('hidden');
+        resultsScreen.classList.remove('hidden');
+    });
           
            const resultTitle = document.getElementById('result-title');
            const resultDesc = document.getElementById('result-desc');
