@@ -343,17 +343,36 @@
         },
         body: JSON.stringify(payload)
     })
-    .then(response => {
-    // Liberamos el resultado en pantalla inmediatamente para el usuario
+// 1. Liberamos la pantalla visual al instante (Cero esperas para el usuario)
     quizScreen.classList.add('hidden');
     resultsScreen.classList.remove('hidden');
-    console.log("Datos sincronizados con éxito en GHL");
-})
-.catch(error => {
-    console.error("Error en segundo plano con GHL:", error);
-    // Si la conexión falla, forzamos la visualización para no frustrar al usuario
-    quizScreen.classList.add('hidden');
-    resultsScreen.classList.remove('hidden');
+
+    // 2. Definimos la URL de tu Webhook de GoHighLevel
+    const webhookUrl = "TU_URL_DE_WEBHOOK_AQUÍ";
+
+    // 3. Capturamos los datos en variables seguras
+    const correoUsuario = document.getElementById("lead-email") ? document.getElementById("lead-email").value : "";
+    const nombreUsuario = document.getElementById("lead-name") ? document.getElementById("lead-name").value : "Anonimo";
+    const puntajeFinal = typeof score !== 'undefined' ? score : 0;
+
+    const payload = {
+    name: nombreUsuario,
+    email: correoUsuario,
+    score: puntajeFinal,
+    source: "Calculadora Riesgo Emocional"
+};
+    };
+
+    // 4. Enviamos los datos a GHL en segundo plano (Si falla, el usuario ni se entera)
+    fetch(webhookUrl, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(response => console.log("Sincronización exitosa con GoHighLevel"))
+    .catch(error => console.error("Envío en segundo plano omitido de forma segura:", error));
 });
           
            const resultTitle = document.getElementById('result-title');
