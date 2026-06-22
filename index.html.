@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Calculadora de Riesgo Emocional | Test de Validaci&oacute;n</title>
+   <script src="https://cdn.tailwindcss.com"></script>
+   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+   <style>
+       body {
+           font-family: 'Inter', sans-serif;
+           background-color: #f8fafc; /* Neutral, calming background */
+           color: #334155;
+       }
+       .fade-in {
+           animation: fadeIn 0.4s ease-in-out;
+       }
+       @keyframes fadeIn {
+           from { opacity: 0; transform: translateY(10px); }
+           to { opacity: 1; transform: translateY(0); }
+       }
+       /* Custom radio button styling */
+       .option-label:has(input:checked) {
+           background-color: #ede9fe;
+           border-color: #8b5cf6;
+           color: #4c1d95;
+           font-weight: 600;
+       }
+   </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col items-center pt-16 pb-8 px-4">
+
+
+   <!-- Botón de Salida de Emergencia - Crucial para víctimas de abuso -->
+   <div class="fixed top-0 left-0 w-full bg-rose-500 text-white text-center py-2 px-4 flex justify-between items-center shadow-md z-50">
+       <span class="text-xs md:text-sm font-medium opacity-90">Navegación Privada</span>
+       <button onclick="emergencyExit()" class="bg-white text-rose-600 hover:bg-rose-50 text-xs md:text-sm font-bold py-1 px-3 rounded shadow transition-colors">
+           SALIDA RÁPIDA ✕
+       </button>
+   </div>
+
+
+   <main class="w-full max-w-2xl bg-white rounded-2xl shadow-xl overflow-hidden mt-4">
+      
+       <!-- PANTALLA DE INICIO -->
+       <div id="start-screen" class="p-8 md:p-12 text-center fade-in">
+           <div class="w-16 h-16 bg-violet-100 text-violet-600 rounded-full flex items-center justify-center mx-auto mb-6">
+               <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+           </div>
+           <h1 class="text-2xl md:text-3xl font-bold mb-4 text-slate-800">El Test de la Verdad</h1>
+           <h2 class="text-lg md:text-xl text-slate-600 mb-6">Descubre si tu relación te está quitando la identidad.</h2>
+           <p class="text-slate-500 mb-8 leading-relaxed text-sm md:text-base text-left">
+               A veces sientes que estás perdiendo la cabeza. Te preguntas constantemente si eres tú la persona "complicada" o si estás reaccionando de forma exagerada.
+               <br><br>
+               Este breve diagnóstico confidencial de 7 preguntas te ayudará a medir tu nivel de disonancia cognitiva y a ponerle nombre a lo que estás viviendo. <strong>Tus respuestas son 100% anónimas y no se guardan en ningún lugar.</strong>
+           </p>
+           <button onclick="startQuiz()" class="w-full md:w-auto px-8 py-4 bg-violet-600 hover:bg-violet-700 text-white font-bold rounded-lg shadow-lg transition-all transform hover:scale-105">
+               INICIAR EVALUACIÓN SEGURO
+           </button>
+       </div>
+
+
+       <!-- PANTALLA DEL CUESTIONARIO -->
+       <div id="quiz-screen" class="hidden p-6 md:p-10 fade-in">
+           <!-- Barra de Progreso -->
+           <div class="mb-8">
+               <div class="flex justify-between text-xs font-semibold text-slate-400 mb-2">
+                   <span id="progress-text">Pregunta 1 de 7</span>
+                   <span>Diagnóstico en curso...</span>
+               </div>
+               <div class="w-full bg-slate-100 rounded-full h-2">
+                   <div id="progress-bar" class="bg-violet-500 h-2 rounded-full transition-all duration-300" style="width: 14%;"></div>
+               </div>
+           </div>
+
+
+           <!-- Contenedor de Preguntas -->
+           <div id="question-container">
+               <h3 id="question-text" class="text-xl md:text-2xl font-bold text-slate-800 mb-6 leading-tight">
+                   <!-- La pregunta se inyecta por JS -->
+               </h3>
+              
+               <div id="options-container" class="space-y-3">
+                   <!-- Las opciones se inyectan por JS -->
+               </div>
+           </div>
+          
+           <div class="mt-8 flex justify-end">
+               <button id="next-btn" onclick="nextQuestion()" class="hidden px-6 py-3 bg-slate-800 text-white font-semibold rounded-lg hover:bg-slate-700 transition-colors">
+                   Siguiente Pregunta →
+               </button>
+           </div>
+       </div>
+
+
+       <!-- PANTALLA DE RESULTADOS -->
+       <div id="result-screen" class="hidden p-6 md:p-10 fade-in">
+           <div class="text-center mb-8">
+               <div id="result-icon" class="w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-4">
+                   <!-- Icono inyectado por JS -->
+               </div>
+               <h2 class="text-xs uppercase tracking-widest font-bold text-slate-400 mb-2">Tu Diagnóstico:</h2>
+               <h1 id="result-title" class="text-3xl md:text-4xl font-bold text-slate-800 mb-4">
+                   <!-- Título de resultado inyectado por JS -->
+               </h1>
+               <p id="result-desc" class="text-slate-600 text-left leading-relaxed p-4 bg-slate-50 rounded-lg border border-slate-100">
+                   <!-- Descripción inyectada por JS -->
+               </p>
+           </div>
+
+
+           <!-- El Pitch "Plan de Fuga" (Lead Magnet to Core Offer) -->
+           <div id="cta-section" class="bg-indigo-900 rounded-xl p-6 md:p-8 text-white shadow-inner relative overflow-hidden">
+               <!-- Decorative background elements -->
+               <div class="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 rounded-full bg-indigo-800 opacity-50 blur-2xl"></div>
+              
+               <h3 class="text-2xl font-bold mb-3 relative z-10">No necesitas más valor. Necesitas una estrategia.</h3>
+               <p class="text-indigo-200 mb-6 text-sm md:text-base leading-relaxed relative z-10">
+                   La mayoría espera el "momento perfecto" o una explosión emocional para escapar. Pero las salidas exitosas no son impulsivas; son calculadas, silenciosas y preparadas.
+               </p>
+              
+               <div class="bg-white/10 rounded-lg p-4 mb-6 backdrop-blur-sm relative z-10">
+                   <h4 class="font-bold text-indigo-100 mb-2">Descubre EL PLAN DE FUGA:</h4>
+                   <ul class="text-sm space-y-2 text-indigo-200">
+                       <li class="flex items-start">
+                           <svg class="w-5 h-5 text-emerald-400 mr-2 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                           Mapa logístico de 30 días sin levantar sospechas.
+                       </li>
+                       <li class="flex items-start">
+                           <svg class="w-5 h-5 text-emerald-400 mr-2 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                           Sistema táctico de Independencia Financiera Oculta.
+                       </li>
+                       <li class="flex items-start">
+                           <svg class="w-5 h-5 text-emerald-400 mr-2 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                           Protocolo de protección contra manipulaciones y recaídas.
+                       </li>
+                   </ul>
+               </div>
+
+
+               <button class="w-full bg-emerald-500 hover:bg-emerald-400 text-white font-bold py-4 px-6 rounded-lg shadow-lg transition-all transform hover:-translate-y-1 relative z-10 flex justify-center items-center">
+                   <span>QUIERO PREPARAR MI LIBERTAD AHORA</span>
+                   <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+               </button>
+               <p class="text-center text-xs text-indigo-300 mt-4 relative z-10 italic">
+                   "Toma acción hoy, <strong>porque</strong> cada día que esperas, tu identidad se desvanece un poco más en silencio."
+               </p>
+           </div>
+       </div>
+   </main>
+
+
+   <script>
+       // Data Structure for the Quiz
+       const questions = [
+           {
+               text: "1. ¿Sientes que debes 'caminar sobre cáscaras de huevo' constantemente para no desatar su enojo o su frialdad?",
+               options: [
+                   { text: "Rara vez o nunca.", score: 0 },
+                   { text: "A veces, dependiendo de su humor.", score: 1 },
+                   { text: "Todos los días. Vivo midiendo mis palabras y acciones.", score: 3 }
+               ]
+           },
+           {
+               text: "2. Después de una discusión, ¿llegas a dudar de tu propia memoria de los hechos (sientes que te están aplicando Luz de Gas / Gaslighting)?",
+               options: [
+                   { text: "No, tengo clara mi realidad.", score: 0 },
+                   { text: "A veces me confunden, pero termino recordando.", score: 2 },
+                   { text: "Constantemente. Llegué a creer que el problema era yo o que estaba loca/o.", score: 3 }
+               ]
+           },
+           {
+               text: "3. ¿Sientes que padeces una especie de 'Amnesia Emocional', sintiendo que has perdido por completo tu esencia, gustos y personalidad?",
+               options: [
+                   { text: "No, mantengo mi identidad clara.", score: 0 },
+                   { text: "He cambiado un poco para evitar peleas.", score: 1 },
+                   { text: "Totalmente. Del paraíso pasé al infierno y ya no sé quién soy.", score: 3 }
+               ]
+           },
+           {
+               text: "4. ¿Con qué frecuencia utiliza 'la ley del hielo' (silencio, ignorarte por completo) como forma de castigo emocional?",
+               options: [
+                   { text: "Nunca ha pasado.", score: 0 },
+                   { text: "Rara vez, solo cuando está muy molesto/a.", score: 1 },
+                   { text: "Es su arma principal. Me deja ignorada/o y no le importa mi dolor.", score: 3 }
+               ]
+           },
+           {
+               text: "5. Respecto a tu círculo social (amigos y familia), en este momento te sientes:",
+               options: [
+                   { text: "Apoyada/o y en contacto frecuente con ellos.", score: 0 },
+                   { text: "Un poco distanciada/o porque mi pareja/familiar no los aprueba.", score: 2 },
+                   { text: "Completamente aislada/o y sola/o, incluso estando acompañada/o en casa.", score: 3 }
+               ]
+           },
+           {
+               text: "6. ¿Has notado que este estrés se ha convertido en síntomas físicos (insomnio, caída de cabello, fatiga extrema, fibromialgia, problemas digestivos)?",
+               options: [
+                   { text: "No he notado cambios físicos.", score: 0 },
+                   { text: "He tenido dolores de cabeza o cansancio leve.", score: 1 },
+                   { text: "Sí, mi cuerpo está somatizando el estrés severamente. Estoy agotada/o.", score: 3 }
+               ]
+           },
+           {
+               text: "7. Si piensas en marcharte de esta situación en este instante, el pensamiento que más te detiene es:",
+               options: [
+                   { text: "No tengo motivos graves para irme.", score: 0 },
+                   { text: "Siento algo de lástima o espero que la relación mejore.", score: 2 },
+                   { text: "El pánico. Siento dependencia económica/emocional y creo que no puedo valerme por mí misma/o.", score: 3 }
+               ]
+           }
+       ];
+
+
+       // App State
+       let currentQuestionIndex = 0;
+       let totalScore = 0;
+       let selectedScore = null;
+
+
+       // DOM Elements
+       const startScreen = document.getElementById('start-screen');
+       const quizScreen = document.getElementById('quiz-screen');
+       const resultScreen = document.getElementById('result-screen');
+       const questionText = document.getElementById('question-text');
+       const optionsContainer = document.getElementById('options-container');
+       const nextBtn = document.getElementById('next-btn');
+       const progressBar = document.getElementById('progress-bar');
+       const progressText = document.getElementById('progress-text');
+
+
+       // Función de Escape Rápido (Crucial)
+       function emergencyExit() {
+           // Se reemplaza en el historial para que no puedan usar el botón "Atrás"
+           window.location.replace("https://www.google.com");
+       }
+
+
+       // Iniciar Quiz
+       function startQuiz() {
+           startScreen.classList.add('hidden');
+           quizScreen.classList.remove('hidden');
+           renderQuestion();
+       }
+
+
+       // Renderizar Pregunta Actual
+       function renderQuestion() {
+           const question = questions[currentQuestionIndex];
+           questionText.textContent = question.text;
+          
+           // Actualizar progreso
+           const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+           progressBar.style.width = `${progress}%`;
+           progressText.textContent = `Pregunta ${currentQuestionIndex + 1} de ${questions.length}`;
+
+
+           // Limpiar estado
+           selectedScore = null;
+           nextBtn.classList.add('hidden');
+           optionsContainer.innerHTML = '';
+
+
+           // Renderizar Opciones
+           question.options.forEach((option, index) => {
+               const label = document.createElement('label');
+               label.className = "option-label block w-full p-4 border-2 border-slate-200 rounded-xl cursor-pointer transition-all duration-200 hover:border-violet-300 hover:bg-slate-50 relative";
+              
+               const input = document.createElement('input');
+               input.type = 'radio';
+               input.name = 'quiz-option';
+               input.className = 'absolute opacity-0 w-0 h-0';
+               input.value = option.score;
+              
+               // Event Listener para selección
+               input.addEventListener('change', (e) => {
+                   selectedScore = parseInt(e.target.value);
+                   nextBtn.classList.remove('hidden');
+                   // Add smooth scroll slightly down so next button is highly visible on mobile
+                   setTimeout(() => {
+                       nextBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                   }, 100);
+               });
+
+
+               const span = document.createElement('span');
+               span.className = "text-base md:text-lg";
+               span.textContent = option.text;
+
+
+               label.appendChild(input);
+               label.appendChild(span);
+               optionsContainer.appendChild(label);
+           });
+       }
+
+
+       // Siguiente Pregunta o Resultados
+       function nextQuestion() {
+           if (selectedScore !== null) {
+               totalScore += selectedScore;
+           }
+
+
+           if (currentQuestionIndex < questions.length - 1) {
+               currentQuestionIndex++;
+               // Add fade animation effect for smooth transition
+               quizScreen.classList.remove('fade-in');
+               void quizScreen.offsetWidth; // trigger reflow
+               quizScreen.classList.add('fade-in');
+               renderQuestion();
+           } else {
+               showResults();
+           }
+       }
+
+
+       // Mostrar Resultados (Validación de Valor Hormozi)
+       function showResults() {
+           quizScreen.classList.add('hidden');
+           resultScreen.classList.remove('hidden');
+          
+           const resultTitle = document.getElementById('result-title');
+           const resultDesc = document.getElementById('result-desc');
+           const resultIcon = document.getElementById('result-icon');
+
+
+           // Lógica del Diagnóstico según el dolor expresado en el prompt
+           if (totalScore <= 6) {
+               resultIcon.className = "w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-4 bg-emerald-100 text-emerald-600";
+               resultIcon.innerHTML = '<svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
+               resultTitle.textContent = "Bajo Nivel de Alerta";
+               resultTitle.className = "text-3xl md:text-4xl font-bold mb-4 text-emerald-600";
+               resultDesc.innerHTML = "Es posible que experimentes conflictos normales de pareja. Tu percepción de la realidad parece estar intacta y conservas tu identidad. Sin embargo, mantén tus límites claros y cuida tu espacio personal.";
+              
+               // Esconder CTA agresivo si no hay riesgo
+               document.getElementById('cta-section').classList.add('hidden');
+              
+           } else if (totalScore <= 14) {
+               resultIcon.className = "w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-4 bg-amber-100 text-amber-600";
+               resultIcon.innerHTML = '<svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>';
+               resultTitle.textContent = "Alerta Naranja: Disonancia Moderada";
+               resultTitle.className = "text-3xl md:text-4xl font-bold mb-4 text-amber-600";
+               resultDesc.innerHTML = "<strong>No estás exagerando.</strong> Las respuestas indican que estás expuesta/o a tácticas de manipulación sutiles (gaslighting) que te hacen dudar de ti misma/o ocasionalmente. Estás comenzando a experimentar el aislamiento y el desgaste emocional. Es el momento exacto para trazar un plan antes de que la 'amnesia emocional' sea severa.";
+           } else {
+               resultIcon.className = "w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-4 bg-rose-100 text-rose-600";
+               resultIcon.innerHTML = '<svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>';
+               resultTitle.textContent = "Alerta Roja: Abuso Emocional Severo";
+               resultTitle.className = "text-3xl md:text-4xl font-bold mb-4 text-rose-600";
+               resultDesc.innerHTML = "<strong>Valida esto hoy: No estás loca/o y la culpa no es tuya.</strong> Tus respuestas confirman una dinámica de control sistemático. Estás experimentando la pérdida severa de identidad, el aislamiento y la somatización física del estrés porque estás sometida/o a tácticas de coerción. El miedo que sientes es real, y la dependencia que percibes ha sido fabricada a propósito para mantenerte allí.";
+           }
+       }
+   </script>
+</body>
+</html>
