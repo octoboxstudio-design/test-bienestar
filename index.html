@@ -344,16 +344,17 @@
         body: JSON.stringify(payload)
     })
     .then(response => {
-        // 5. Una vez que GHL recibe el lead con éxito, mostramos los resultados en la pantalla
-        quizScreen.classList.add('hidden');
-        resultsScreen.classList.remove('hidden');
-    })
-    .catch(error => {
-        console.error("Error al enviar a GHL:", error);
-        // Respaldo de seguridad: si falla la red, mostramos el resultado igual para no frustrar al usuario
-        quizScreen.classList.add('hidden');
-        resultsScreen.classList.remove('hidden');
-    });
+    // Liberamos el resultado en pantalla inmediatamente para el usuario
+    quizScreen.classList.add('hidden');
+    resultsScreen.classList.remove('hidden');
+    console.log("Datos sincronizados con éxito en GHL");
+})
+.catch(error => {
+    console.error("Error en segundo plano con GHL:", error);
+    // Si la conexión falla, forzamos la visualización para no frustrar al usuario
+    quizScreen.classList.add('hidden');
+    resultsScreen.classList.remove('hidden');
+});
           
            const resultTitle = document.getElementById('result-title');
            const resultDesc = document.getElementById('result-desc');
